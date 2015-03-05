@@ -1,9 +1,11 @@
 package com.cube.bbcnews;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 /**
  * // TODO: Add class description
@@ -22,8 +24,11 @@ public class StoriesAdapter extends ArrayAdapter<String>
 	{
 		String name = getItem(position);
 
-		View item = 
+		View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.stories_list_item, parent, false);
+		TextView title = (TextView)item.findViewById(R.id.title);
 
-		return super.getView(position, convertView, parent);
+		title.setText(name);
+
+		return item;
 	}
 }
