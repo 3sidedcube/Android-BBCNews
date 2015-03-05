@@ -1,6 +1,7 @@
 package com.cube.bbcnews;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 /**
@@ -16,5 +17,15 @@ public class MainActivity extends Activity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.main_view);
+
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_holder, new StoriesListFragment());
+
+		if (findViewById(R.id.fragment2_holder) != null)
+		{
+			transaction.replace(R.id.fragment2_holder, new StoriesListFragment());
+		}
+
+		transaction.commit();
 	}
 }
