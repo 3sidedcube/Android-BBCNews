@@ -16,7 +16,7 @@ import android.widget.Toast;
  * @author Callum Taylor
  * @project BBCNews
  */
-public class StoriesListFragment extends Fragment implements AdapterView.OnItemClickListener
+public class StoriesListFragment extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener
 {
 	private ListView listView;
 
@@ -52,10 +52,17 @@ public class StoriesListFragment extends Fragment implements AdapterView.OnItemC
 
 		listView.setAdapter(new StoriesAdapter(names));
 		listView.setOnItemClickListener(this);
+		listView.setOnItemLongClickListener(this);
 	}
 
 	@Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 	{
 		Toast.makeText(getActivity(), String.format("Item %s was clicked!", position), Toast.LENGTH_LONG).show();
+	}
+
+	@Override public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+	{
+		Toast.makeText(getActivity(), String.format("Item %s was long clicked!", position), Toast.LENGTH_LONG).show();
+		return true;
 	}
 }
