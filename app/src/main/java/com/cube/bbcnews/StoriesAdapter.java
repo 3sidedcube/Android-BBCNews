@@ -24,13 +24,19 @@ public class StoriesAdapter extends BaseAdapter
 	@Override public View getView(int position, View convertView, ViewGroup parent)
 	{
 		String name = getItem(position);
+		TextView title;
 
 		if (convertView == null)
 		{
 			convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.stories_list_item, parent, false);
-		}
+			title = (TextView)convertView.findViewById(R.id.title);
 
-		TextView title = (TextView)convertView.findViewById(R.id.title);
+			convertView.setTag(title);
+		}
+		else
+		{
+			title = (TextView)convertView.getTag();
+		}
 
 		title.setText(name);
 
