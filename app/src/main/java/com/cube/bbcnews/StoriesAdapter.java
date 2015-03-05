@@ -24,21 +24,25 @@ public class StoriesAdapter extends BaseAdapter
 	@Override public View getView(int position, View convertView, ViewGroup parent)
 	{
 		String name = getItem(position);
-		TextView title;
+		StoryHolder holder;
 
 		if (convertView == null)
 		{
 			convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.stories_list_item, parent, false);
-			title = (TextView)convertView.findViewById(R.id.title);
 
-			convertView.setTag(title);
+			holder = new StoryHolder();
+			holder.title = (TextView)convertView.findViewById(R.id.title);
+			holder.subtitle = (TextView)convertView.findViewById(R.id.subtitle);
+
+			convertView.setTag(holder);
 		}
 		else
 		{
-			title = (TextView)convertView.getTag();
+			holder = (StoryHolder)convertView.getTag();
 		}
 
-		title.setText(name);
+		holder.title.setText(name);
+		holder.subtitle.setText(name);
 
 		return convertView;
 	}
