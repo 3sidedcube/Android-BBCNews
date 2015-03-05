@@ -48,6 +48,6 @@ public class StoriesListFragment extends Fragment
 			"Imogen"
 		};
 
-		listView.setAdapter(new StoriesAdapter(getActivity(), names));
+		listView.setAdapter(new StoriesAdapter(names));
 	}
 }

@@ -1,10 +1,9 @@
 package com.cube.bbcnews;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 /**
@@ -13,11 +12,13 @@ import android.widget.TextView;
  * @author Callum Taylor
  * @project BBCNews
  */
-public class StoriesAdapter extends ArrayAdapter<String>
+public class StoriesAdapter extends BaseAdapter
 {
-	public StoriesAdapter(Context context, String[] objects)
+	private String[] items;
+
+	public StoriesAdapter(String[] objects)
 	{
-		super(context, android.R.layout.simple_list_item_1, objects);
+		this.items = objects;
 	}
 
 	@Override public View getView(int position, View convertView, ViewGroup parent)
@@ -30,5 +31,20 @@ public class StoriesAdapter extends ArrayAdapter<String>
 		title.setText(name);
 
 		return item;
+	}
+
+	@Override public int getCount()
+	{
+		return items.length;
+	}
+
+	@Override public String getItem(int position)
+	{
+		return items[position];
+	}
+
+	@Override public long getItemId(int position)
+	{
+		return items[position].hashCode();
 	}
 }
