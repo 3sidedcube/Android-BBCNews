@@ -16,5 +16,10 @@ public class MainActivity extends Activity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.main_view);
+
+		getFragmentManager()
+			.beginTransaction()
+			.replace(R.id.fragment_holder, new StoriesListFragment())
+			.commit();
 	}
 }
