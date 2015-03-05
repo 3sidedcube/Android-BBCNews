@@ -6,7 +6,9 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * // TODO: Add class description
@@ -14,7 +16,7 @@ import android.widget.ListView;
  * @author Callum Taylor
  * @project BBCNews
  */
-public class StoriesListFragment extends Fragment
+public class StoriesListFragment extends Fragment implements AdapterView.OnItemClickListener
 {
 	private ListView listView;
 
@@ -49,5 +51,11 @@ public class StoriesListFragment extends Fragment
 		};
 
 		listView.setAdapter(new StoriesAdapter(names));
+		listView.setOnItemClickListener(this);
+	}
+
+	@Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+	{
+		Toast.makeText(getActivity(), String.format("Item %s was clicked!", position), Toast.LENGTH_LONG).show();
 	}
 }
