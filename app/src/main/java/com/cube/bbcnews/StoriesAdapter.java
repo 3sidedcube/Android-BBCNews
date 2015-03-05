@@ -25,12 +25,16 @@ public class StoriesAdapter extends BaseAdapter
 	{
 		String name = getItem(position);
 
-		View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.stories_list_item, parent, false);
-		TextView title = (TextView)item.findViewById(R.id.title);
+		if (convertView == null)
+		{
+			convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.stories_list_item, parent, false);
+		}
+
+		TextView title = (TextView)convertView.findViewById(R.id.title);
 
 		title.setText(name);
 
-		return item;
+		return convertView;
 	}
 
 	@Override public int getCount()
