@@ -25,4 +25,12 @@ public class StoryDetailsFragment extends Fragment
 
 		return view;
 	}
+
+	@Override public void onActivityCreated(Bundle savedInstanceState)
+	{
+		super.onActivityCreated(savedInstanceState);
+
+		String name = getArguments().getString("name");
+		header.setText(name);
+	}
 }
