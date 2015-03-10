@@ -61,6 +61,7 @@ public class StoriesListFragment extends Fragment implements AdapterView.OnItemC
 	@Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 	{
 		Intent details = new Intent(getActivity(), StoryDetailsActivity.class);
+		details.putExtra("name", adapter.getItem(position));
 		startActivity(details);
 	}
 
