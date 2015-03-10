@@ -20,6 +20,7 @@ import android.widget.Toast;
 public class StoriesListFragment extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener
 {
 	private ListView listView;
+	private StoriesAdapter adapter;
 
 	@Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
@@ -51,7 +52,8 @@ public class StoriesListFragment extends Fragment implements AdapterView.OnItemC
 			"Imogen"
 		};
 
-		listView.setAdapter(new StoriesAdapter(names));
+		adapter = new StoriesAdapter(names);
+		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
 	}
