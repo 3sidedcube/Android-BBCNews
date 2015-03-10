@@ -30,7 +30,14 @@ public class StoryDetailsFragment extends Fragment
 	{
 		super.onActivityCreated(savedInstanceState);
 
-		String name = getArguments().getString("name");
-		header.setText(name);
+		if (getArguments() != null)
+		{
+			String name = getArguments().getString("name");
+			header.setText(name);
+		}
+		else
+		{
+			getActivity().finish();
+		}
 	}
 }
