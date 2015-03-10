@@ -14,10 +14,11 @@ public class StoryDetailsActivity extends Activity
 
 		if (getIntent().getExtras() != null)
 		{
-			String name = getIntent().getExtras().getString("name");
+			StoryDetailsFragment fragment = new StoryDetailsFragment();
+			fragment.setArguments(getIntent().getExtras());
 
 			FragmentTransaction transaction = getFragmentManager().beginTransaction();
-			transaction.replace(R.id.fragment_holder, new StoryDetailsFragment());
+			transaction.replace(R.id.fragment_holder, fragment);
 			transaction.commit();
 		}
 		else
