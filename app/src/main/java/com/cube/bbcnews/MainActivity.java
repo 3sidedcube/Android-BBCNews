@@ -26,6 +26,20 @@ public class MainActivity extends Activity
 		transaction.commit();
 	}
 
+	/**
+	 * this method is called when the activity is destroyed so you can retain any variable on rotation.
+	 * We're going to use this so we remember what story (if any) was selected. It uses the same Bundle
+	 * class that we've used before.
+	 *
+	 * @param outState
+	 */
+	@Override protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+
+		outState.putString("name", story);
+	}
+
 	public void selectStory(String story)
 	{
 		this.story = story;
