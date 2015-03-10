@@ -12,6 +12,8 @@ public class StoryDetailsActivity extends Activity
 
 		setContentView(R.layout.fragment_holder_view);
 
+		String name = getIntent().getExtras().getString("name");
+
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_holder, new StoryDetailsFragment());
 		transaction.commit();
