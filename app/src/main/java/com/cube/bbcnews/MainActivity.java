@@ -3,6 +3,7 @@ package com.cube.bbcnews;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 /**
  * // TODO: Add class description
@@ -28,9 +29,20 @@ public class MainActivity extends Activity
 		{
 			// get our story back from the instance
 			this.story = savedInstanceState.getString("name");
+
+			if (!TextUtils.isEmpty(story))
+			{
+				selectStory(story);
+			}
 		}
 
-		transaction.replace(R.id.fragment_holder, new StoriesListFragment());
+		// If we're in landscape mode, nothing will be in fragment_holder, so we need to populate it
+		// but if we're in portrait mode and a story has been selected, it will, and if no story has
+		// been selected, it will also be null, so populate it again
+		if (getFragmentManager().findFragmentById(R.id.fragment_holder) == null)
+		{
+			transaction.replace(R.id.fragment_holder, new StoriesListFragment());
+		}
 
 		transaction.commit();
 	}
