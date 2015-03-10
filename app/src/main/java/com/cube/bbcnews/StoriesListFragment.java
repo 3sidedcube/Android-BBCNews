@@ -1,6 +1,7 @@
 package com.cube.bbcnews;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -57,7 +58,8 @@ public class StoriesListFragment extends Fragment implements AdapterView.OnItemC
 
 	@Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 	{
-		Toast.makeText(getActivity(), String.format("Item %s was clicked!", position), Toast.LENGTH_LONG).show();
+		Intent details = new Intent(getActivity(), StoryDetailsActivity.class);
+		startActivity(details);
 	}
 
 	@Override public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
