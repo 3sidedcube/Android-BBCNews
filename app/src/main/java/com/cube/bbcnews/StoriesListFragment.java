@@ -1,7 +1,6 @@
 package com.cube.bbcnews;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -60,9 +59,14 @@ public class StoriesListFragment extends Fragment implements AdapterView.OnItemC
 
 	@Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 	{
-		Intent details = new Intent(getActivity(), StoryDetailsActivity.class);
-		details.putExtra("name", adapter.getItem(position));
-		startActivity(details);
+		if (getActivity() instanceof MainActivity)
+		{
+			((MainActivity)getActivity()).selectStory(adapter.getItem(position));
+		}
+
+//		Intent details = new Intent(getActivity(), StoryDetailsActivity.class);
+//		details.putExtra("name", adapter.getItem(position));
+//		startActivity(details);
 	}
 
 	@Override public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
