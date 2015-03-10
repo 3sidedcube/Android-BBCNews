@@ -1,6 +1,7 @@
 package com.cube.bbcnews;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -34,14 +35,23 @@ public class MainActivity extends Activity
 			{
 				selectStory(story);
 			}
-		}
 
-		// If we're in landscape mode, nothing will be in fragment_holder, so we need to populate it
-		// but if we're in portrait mode and a story has been selected, it will, and if no story has
-		// been selected, it will also be null, so populate it again
-		if (getFragmentManager().findFragmentById(R.id.fragment_holder) == null)
+			// We always want the fragment_holder to be the list if fragment2_holder exists
+			if (findViewById(R.id.fragment2_holder) != null)
+			{
+				transaction.replace(R.id.fragment_holder, new StoriesListFragment());
+				getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			}
+		}
+		else
 		{
-			transaction.replace(R.id.fragment_holder, new StoriesListFragment());
+			// If we're in landscape mode, nothing will be in fragment_holder, so we need to populate it
+			// but if we're in portrait mode and a story has been selected, it will, and if no story has
+			// been selected, it will also be null, so populate it again
+			if (getFragmentManager().findFragmentByTag("story") == null)
+			{
+				transaction.replace(R.id.fragment_holder, new StoriesListFragment());
+			}
 		}
 
 		transaction.commit();
@@ -58,7 +68,14 @@ public class MainActivity extends Activity
 	{
 		super.onSaveInstanceState(outState);
 
-		outState.putString("name", story);
+		// we dont want to pass the story through if we're no longer reading a story, so we need to do
+		// a check. We can do that by tagging our fragment and then checking if its still available
+		// when this method is called via that tag. We use tag because we don't know what fragment_holder
+		// the fragment will live in
+		if (getFragmentManager().findFragmentByTag("story") != null)
+		{
+			outState.putString("name", story);
+		}
 	}
 
 	public void selectStory(String story)
@@ -75,11 +92,13 @@ public class MainActivity extends Activity
 
 		if (findViewById(R.id.fragment2_holder) != null)
 		{
-			transaction.replace(R.id.fragment2_holder, fragment);
+			transaction.replace(R.id.fragment2_holder, fragment, "story");
 		}
 		else
 		{
-			transaction.replace(R.id.fragment_holder, fragment).addToBackStack("story");
+			// we need to change backstack tag to null because we dont want it to get confused with our
+			// tagging system for our instance state checking
+			transaction.replace(R.id.fragment_holder, fragment, "story").addToBackStack(null);
 		}
 
 		transaction.commit();
