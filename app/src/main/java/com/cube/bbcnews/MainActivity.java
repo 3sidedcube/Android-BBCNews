@@ -21,6 +21,15 @@ public class MainActivity extends Activity
 		setContentView(R.layout.main_view);
 
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+		// If the device has orientated, savedInstanceState will not be null. it will only ever be
+		// null if the activity has started for the very first time
+		if (savedInstanceState != null)
+		{
+			// get our story back from the instance
+			this.story = savedInstanceState.getString("name");
+		}
+
 		transaction.replace(R.id.fragment_holder, new StoriesListFragment());
 
 		transaction.commit();
