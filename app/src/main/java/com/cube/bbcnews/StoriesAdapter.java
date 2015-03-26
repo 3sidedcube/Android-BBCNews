@@ -21,6 +21,11 @@ public class StoriesAdapter extends BaseAdapter
 		this.items = objects;
 	}
 
+	public void setItems(Story[] items)
+	{
+		this.items = items;
+	}
+
 	@Override public View getView(int position, View convertView, ViewGroup parent)
 	{
 		Story story = getItem(position);
