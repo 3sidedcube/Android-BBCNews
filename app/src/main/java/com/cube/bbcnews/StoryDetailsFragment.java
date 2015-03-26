@@ -33,7 +33,8 @@ public class StoryDetailsFragment extends Fragment
 		if (getArguments() != null)
 		{
 			Story story = (Story)getArguments().get("story");
-			header.setText(story.getTitle());
+			this.header.setText(story.getTitle());
+			this.story.setText(story.getBody());
 		}
 		else
 		{
