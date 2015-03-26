@@ -14,16 +14,21 @@ import android.widget.TextView;
  */
 public class StoriesAdapter extends BaseAdapter
 {
-	private String[] items;
+	private Story[] items;
 
-	public StoriesAdapter(String[] objects)
+	public StoriesAdapter(Story[] objects)
 	{
 		this.items = objects;
 	}
 
+	public void setItems(Story[] items)
+	{
+		this.items = items;
+	}
+
 	@Override public View getView(int position, View convertView, ViewGroup parent)
 	{
-		String name = getItem(position);
+		Story story = getItem(position);
 		StoryHolder holder;
 
 		if (convertView == null)
@@ -41,8 +46,8 @@ public class StoriesAdapter extends BaseAdapter
 			holder = (StoryHolder)convertView.getTag();
 		}
 
-		holder.title.setText(name);
-		holder.subtitle.setText(name);
+		holder.title.setText(story.getTitle());
+		holder.subtitle.setText(story.getBody());
 
 		return convertView;
 	}
@@ -52,7 +57,7 @@ public class StoriesAdapter extends BaseAdapter
 		return items.length;
 	}
 
-	@Override public String getItem(int position)
+	@Override public Story getItem(int position)
 	{
 		return items[position];
 	}
