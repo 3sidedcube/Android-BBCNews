@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import net.callumtaylor.asynchttp.AsyncHttpClient;
+import net.callumtaylor.asynchttp.response.BitmapResponseHandler;
+
 public class StoryDetailsFragment extends Fragment
 {
 	private ImageView featureImage;
@@ -35,6 +38,17 @@ public class StoryDetailsFragment extends Fragment
 			Story story = (Story)getArguments().get("story");
 			this.header.setText(story.getTitle());
 			this.story.setText(story.getBody());
+
+			new AsyncHttpClient(story.getImageURL())
+				.get(new BitmapResponseHandler()
+				{
+					@Override public void onSuccess(){}
+
+					@Override public void onFinish(boolean failed)
+					{
+						featureImage.setImageBitmap(getContent());
+					}
+				});
 		}
 		else
 		{
