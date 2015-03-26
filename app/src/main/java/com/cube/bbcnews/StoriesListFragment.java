@@ -34,25 +34,11 @@ public class StoriesListFragment extends Fragment implements AdapterView.OnItemC
 	{
 		super.onActivityCreated(savedInstanceState);
 
-		String[] names = {
-			"Callum",
-			"Ollie",
-			"Steve",
-			"Tim",
-			"Matt",
-			"Matt C",
-			"Keisha",
-			"Duncan",
-			"Jess",
-			"Sam",
-			"Simon",
-			"Dan",
-			"Puff",
-			"Sophie",
-			"Imogen"
+		Story[] stories = {
+			new Story("Title", "Body", "http://placespider.com/200/200")
 		};
 
-		adapter = new StoriesAdapter(names);
+		adapter = new StoriesAdapter(stories);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
@@ -61,7 +47,7 @@ public class StoriesListFragment extends Fragment implements AdapterView.OnItemC
 	@Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 	{
 		Intent details = new Intent(getActivity(), StoryDetailsActivity.class);
-		details.putExtra("name", adapter.getItem(position));
+		details.putExtra("story", adapter.getItem(position));
 		startActivity(details);
 	}
 
