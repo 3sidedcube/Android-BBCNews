@@ -1,6 +1,8 @@
 package com.cube.bbcnews;
 
-public class Story
+import java.io.Serializable;
+
+public class Story implements Serializable
 {
 	private String title;
 	private String body;
