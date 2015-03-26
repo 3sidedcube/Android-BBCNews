@@ -37,7 +37,9 @@ public class StoriesListFragment extends Fragment implements AdapterView.OnItemC
 	{
 		super.onActivityCreated(savedInstanceState);
 
-		adapter = new StoriesAdapter(new Story[]{});
+		Story[] stories = {};
+
+		adapter = new StoriesAdapter(stories);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);

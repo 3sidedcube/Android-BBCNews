@@ -4,7 +4,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import net.callumtaylor.asynchttp.AsyncHttpClient;
+import net.callumtaylor.asynchttp.response.BitmapResponseHandler;
 
 /**
  * // TODO: Add class description
@@ -29,7 +33,7 @@ public class StoriesAdapter extends BaseAdapter
 	@Override public View getView(int position, View convertView, ViewGroup parent)
 	{
 		Story story = getItem(position);
-		StoryHolder holder;
+		final StoryHolder holder;
 
 		if (convertView == null)
 		{
@@ -38,6 +42,7 @@ public class StoriesAdapter extends BaseAdapter
 			holder = new StoryHolder();
 			holder.title = (TextView)convertView.findViewById(R.id.title);
 			holder.subtitle = (TextView)convertView.findViewById(R.id.subtitle);
+			holder.icon = (ImageView)convertView.findViewById(R.id.icon);
 
 			convertView.setTag(holder);
 		}
@@ -48,6 +53,27 @@ public class StoriesAdapter extends BaseAdapter
 
 		holder.title.setText(story.getTitle());
 		holder.subtitle.setText(story.getBody());
+
+		holder.icon.setImageBitmap(null);
+
+		if (holder.icon.getTag() != null)
+		{
+			((AsyncHttpClient)holder.icon.getTag()).cancel();
+		}
+
+		AsyncHttpClient client = new AsyncHttpClient(story.getImageURL());
+		client.get(new BitmapResponseHandler()
+		{
+			@Override public void onSuccess(){}
+
+			@Override public void onFinish(boolean failed)
+			{
+				holder.icon.setTag(null);
+				holder.icon.setImageBitmap(getContent());
+			}
+		});
+
+		holder.icon.setTag(client);
 
 		return convertView;
 	}
