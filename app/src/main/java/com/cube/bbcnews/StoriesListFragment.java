@@ -11,6 +11,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import net.callumtaylor.asynchttp.AsyncHttpClient;
+import net.callumtaylor.asynchttp.response.GsonResponseHandler;
+
 /**
  * // TODO: Add class description
  *
@@ -34,11 +37,23 @@ public class StoriesListFragment extends Fragment implements AdapterView.OnItemC
 	{
 		super.onActivityCreated(savedInstanceState);
 
-
 		adapter = new StoriesAdapter(new Story[]{});
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
+
+		new AsyncHttpClient("https://raw.githubusercontent.com/3sidedcube/Android-BBCNews/lesson/four/feed.json").get(new GsonResponseHandler<Story[]>(Story[].class)
+		{
+			@Override public void onSuccess()
+			{
+				adapter.setItems(getContent());
+			}
+
+			@Override public void onFinish(boolean failed)
+			{
+				adapter.notifyDataSetChanged();
+			}
+		});
 	}
 
 	@Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
