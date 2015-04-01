@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,18 +45,33 @@ public class StoriesListFragment extends Fragment implements AdapterView.OnItemC
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
 
-		new AsyncHttpClient("https://raw.githubusercontent.com/3sidedcube/Android-BBCNews/master/feed.json").get(new GsonResponseHandler<Story[]>(Story[].class)
+		long lastModified = System.currentTimeMillis();
+		if (CacheManager.getInstance().fileExists(getActivity().getFilesDir().getAbsolutePath() + "/stories"))
 		{
-			@Override public void onSuccess()
-			{
-				adapter.setItems(getContent());
-			}
+			lastModified = CacheManager.getInstance().fileModifiedDate(getActivity().getFilesDir().getAbsolutePath() + "/stories");
+			stories = (Story[])CacheManager.getInstance().load(getActivity().getFilesDir().getAbsolutePath() + "/stories");
+			adapter.setItems(stories);
+			adapter.notifyDataSetChanged();
+		}
 
-			@Override public void onFinish(boolean failed)
+		if (System.currentTimeMillis() - lastModified > 60 * 1000) // 1 minute
+		{
+			new AsyncHttpClient("https://raw.githubusercontent.com/3sidedcube/Android-BBCNews/master/feed.json").get(new GsonResponseHandler<Story[]>(Story[].class)
 			{
-				adapter.notifyDataSetChanged();
-			}
-		});
+				@Override public void onSuccess()
+				{
+					adapter.setItems(getContent());
+
+					CacheManager.getInstance().save(getActivity().getFilesDir().getAbsolutePath() + "/stories", getContent());
+					Log.e("BBC", "File exists? " + CacheManager.getInstance().fileExists(getActivity().getFilesDir().getAbsolutePath() + "/stories"));
+				}
+
+				@Override public void onFinish(boolean failed)
+				{
+					adapter.notifyDataSetChanged();
+				}
+			});
+		}
 	}
 
 	@Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
