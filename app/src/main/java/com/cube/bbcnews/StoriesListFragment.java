@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,9 @@ public class StoriesListFragment extends Fragment implements AdapterView.OnItemC
 			@Override public void onSuccess()
 			{
 				adapter.setItems(getContent());
+
+				CacheManager.getInstance().save(getActivity().getFilesDir().getAbsolutePath() + "/stories", getContent());
+				Log.e("BBC", "File exists? " + CacheManager.getInstance().fileExists(getActivity().getFilesDir().getAbsolutePath() + "/stories"));
 			}
 
 			@Override public void onFinish(boolean failed)
