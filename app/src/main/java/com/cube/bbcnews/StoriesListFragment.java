@@ -45,21 +45,30 @@ public class StoriesListFragment extends Fragment implements AdapterView.OnItemC
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
 
-		new AsyncHttpClient("https://raw.githubusercontent.com/3sidedcube/Android-BBCNews/master/feed.json").get(new GsonResponseHandler<Story[]>(Story[].class)
+		if (CacheManager.getInstance().fileExists(getActivity().getFilesDir().getAbsolutePath() + "/stories"))
 		{
-			@Override public void onSuccess()
+			stories = (Story[])CacheManager.getInstance().load(getActivity().getFilesDir().getAbsolutePath() + "/stories");
+			adapter.setItems(stories);
+			adapter.notifyDataSetChanged();
+		}
+		else
+		{
+			new AsyncHttpClient("https://raw.githubusercontent.com/3sidedcube/Android-BBCNews/master/feed.json").get(new GsonResponseHandler<Story[]>(Story[].class)
 			{
-				adapter.setItems(getContent());
+				@Override public void onSuccess()
+				{
+					adapter.setItems(getContent());
 
-				CacheManager.getInstance().save(getActivity().getFilesDir().getAbsolutePath() + "/stories", getContent());
-				Log.e("BBC", "File exists? " + CacheManager.getInstance().fileExists(getActivity().getFilesDir().getAbsolutePath() + "/stories"));
-			}
+					CacheManager.getInstance().save(getActivity().getFilesDir().getAbsolutePath() + "/stories", getContent());
+					Log.e("BBC", "File exists? " + CacheManager.getInstance().fileExists(getActivity().getFilesDir().getAbsolutePath() + "/stories"));
+				}
 
-			@Override public void onFinish(boolean failed)
-			{
-				adapter.notifyDataSetChanged();
-			}
-		});
+				@Override public void onFinish(boolean failed)
+				{
+					adapter.notifyDataSetChanged();
+				}
+			});
+		}
 	}
 
 	@Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
