@@ -45,13 +45,16 @@ public class StoriesListFragment extends Fragment implements AdapterView.OnItemC
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
 
+		long lastModified = System.currentTimeMillis();
 		if (CacheManager.getInstance().fileExists(getActivity().getFilesDir().getAbsolutePath() + "/stories"))
 		{
+			lastModified = CacheManager.getInstance().fileModifiedDate(getActivity().getFilesDir().getAbsolutePath() + "/stories");
 			stories = (Story[])CacheManager.getInstance().load(getActivity().getFilesDir().getAbsolutePath() + "/stories");
 			adapter.setItems(stories);
 			adapter.notifyDataSetChanged();
 		}
-		else
+
+		if (System.currentTimeMillis() - lastModified > 60 * 1000) // 1 minute
 		{
 			new AsyncHttpClient("https://raw.githubusercontent.com/3sidedcube/Android-BBCNews/master/feed.json").get(new GsonResponseHandler<Story[]>(Story[].class)
 			{
